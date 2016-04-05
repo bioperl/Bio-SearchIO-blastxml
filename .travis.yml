@@ -1,0 +1,28 @@
+language: perl
+perl:
+  - "5.18"
+  - "5.16"
+  - "5.14"
+  - "5.12"
+  - "5.10"
+
+env: PERL_CPANM_OPT="--notest --force --skip-satisfied"
+
+install:
+    - "sudo apt-get install libxml2 2>&1 | tail -n 4"
+    - "cpanm XML::SAX | tail -n 1"
+    - "cpanm Bio::Root::Root | tail -n 1"
+    #Test coverage from Coveralls
+    - cpanm --quiet --notest Devel::Cover::Report::Coveralls
+
+script:
+    - PERL5OPT=-MDevel::Cover=+ignore,prove,-coverage,all prove -lr t
+    - cover -report coveralls
+
+notifications:
+  email: false
+
+# whitelist branches
+branches:
+  only:
+    - master
