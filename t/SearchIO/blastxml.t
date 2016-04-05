@@ -1,6 +1,3 @@
-# -*-Perl-*- Test Harness script for Bioperl
-# $Id: SearchIO.t 14995 2008-11-16 06:20:00Z cjfields $
-
 use strict;
 
 BEGIN {
@@ -14,9 +11,6 @@ BEGIN {
 }
 
 my ($searchio, $result,$iter,$hit,$hsp);
-
-# XML encoding/decoding done within XML::SAX now, though some parsers
-# do not work properly (XML::SAX::PurePerl, XML::LibXML::SAX)
 
 eval {
 	# test with RPSBLAST data first
