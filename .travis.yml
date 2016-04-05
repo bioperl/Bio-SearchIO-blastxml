@@ -6,14 +6,12 @@ perl:
   - "5.12"
   - "5.10"
 
-env: PERL_CPANM_OPT="--notest --force --skip-satisfied"
-
 before_install:
     - "sudo apt-get install libxml2 2>&1 | tail -n 4"
 
 install:
     # also include test coverage from Coveralls
-    - cpanm --quiet --notest XML::SAX Bio::Root::Root Devel::Cover::Report::Coveralls
+    - cpanm --quiet --force --skip-satisfied --notest XML::SAX Bio::Root::Root Devel::Cover::Report::Coveralls
 
 script:
     - PERL5OPT=-MDevel::Cover=+ignore,prove,-coverage,all prove -lr t
