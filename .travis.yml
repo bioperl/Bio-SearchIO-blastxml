@@ -11,7 +11,7 @@ before_install:
 
 install:
     # also include test coverage from Coveralls
-    - cpanm --quiet --force --skip-satisfied --notest XML::SAX Bio::Root::Root Devel::Cover::Report::Coveralls
+    - cpanm --quiet --force --skip-satisfied --notest XML::SAX XML::LibXML Bio::Root::Root Devel::Cover::Report::Coveralls
 
 script:
     - PERL5OPT=-MDevel::Cover=+ignore,prove,-coverage,all prove -lr t
