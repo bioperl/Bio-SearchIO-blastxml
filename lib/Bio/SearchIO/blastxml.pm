@@ -19,7 +19,7 @@
 
     use Bio::SearchIO;
     my $searchin = Bio::SearchIO->new(-format => 'blastxml',
-				     -file   => 't/data/plague_yeast.bls.xml');
+                     -file   => 't/data/plague_yeast.bls.xml');
 
     while( my $result = $searchin->next_result ) {
         ....
@@ -29,8 +29,8 @@
     # by using the tempfile initialization flag.
 
     $searchin = Bio::SearchIO->new(-tempfile => 1,
-				     -format => 'blastxml',
-				     -file   => 't/data/plague_yeast.bls.xml');
+                     -format => 'blastxml',
+                     -file   => 't/data/plague_yeast.bls.xml');
 
     while( my $result = $searchin->next_result ) {
        ....
@@ -40,7 +40,7 @@
     $searchin = Bio::SearchIO->new(
                      -format => 'blastxml',
                      -blasttype => 'psiblast',
-				     -file   => 't/data/plague_yeast.bls.xml');
+                     -file   => 't/data/plague_yeast.bls.xml');
 
     while( my $result = $searchin->next_result ) {
        ....
@@ -132,8 +132,8 @@ my %VALID_TYPE = (
 
  Title   : new
  Usage   : my $searchio = Bio::SearchIO->new(-format => 'blastxml',
-					    -file   => 'filename',
-					    -tempfile => 1);
+                        -file   => 'filename',
+                        -tempfile => 1);
  Function: Initializes the object - this is chained through new in SearchIO
  Returns : Bio::SearchIO::blastxml object
  Args    : One additional argument from the format and file/fh parameters.
@@ -172,11 +172,11 @@ sub attach_EventHandler {
 
     $self->SUPER::attach_EventHandler($handler);
 
-	# Make sure if there is an XML parser present already, the internal Handler
-	# is set
-	if (exists $self->{'_xmlparser'}) {
-		$self->{'_xmlparser'}->get_handler->eventHandler($handler);
-	}
+    # Make sure if there is an XML parser present already, the internal Handler
+    # is set
+    if (exists $self->{'_xmlparser'}) {
+        $self->{'_xmlparser'}->get_handler->eventHandler($handler);
+    }
 
     # Optimization: caching the EventHandler since it is used a lot
     # during the parse.
@@ -232,25 +232,25 @@ sub next_result {
 
     my %parser_args;
     if( defined $tfh ) {
-	seek($tfh,0,0);
-	%parser_args = ('Source' => { 'ByteStream' => $tfh });
+    seek($tfh,0,0);
+    %parser_args = ('Source' => { 'ByteStream' => $tfh });
     } else {
-	%parser_args = ('Source' => { 'String' => $self->{'_blastdata'} });
+    %parser_args = ('Source' => { 'String' => $self->{'_blastdata'} });
     }
 
     my $starttime;
     if(  $DEBUG ) {  $starttime = [ Time::HiRes::gettimeofday() ]; }
 
     eval {
-	$result = $self->{'_xmlparser'}->parse(%parser_args);
+    $result = $self->{'_xmlparser'}->parse(%parser_args);
     };
 
     if( $@ ) {
-	$self->warn("error in parsing a report:\n $@");
-	$result = undef;
+    $self->warn("error in parsing a report:\n $@");
+    $result = undef;
     }
     if( $DEBUG ) {
-	$self->debug( sprintf("parsing took %f seconds\n", Time::HiRes::tv_interval($starttime)));
+    $self->debug( sprintf("parsing took %f seconds\n", Time::HiRes::tv_interval($starttime)));
     }
     # parsing magic here - but we call event handlers rather than
     # instantiating things
