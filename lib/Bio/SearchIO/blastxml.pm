@@ -1,4 +1,8 @@
-#
+# ABSTRACT: A SearchIO implementation of NCBI Blast XML parsing.
+# AUTHOR:   Jason Stajich <jason-at-bioperl.org>
+# OWNER:    2006-2018 Jason Stajich
+# LICENSE:  Perl_5
+
 # BioPerl module for Bio::SearchIO::blastxml
 #
 # Please direct questions and support issues to <bioperl-l@bioperl.org>
@@ -10,10 +14,6 @@
 # You may distribute this module under the same terms as perl itself
 
 # POD documentation - main docs before the code
-
-=head1 NAME
-
-Bio::SearchIO::blastxml - A SearchIO implementation of NCBI Blast XML parsing.
 
 =head1 SYNOPSIS
 
@@ -93,39 +93,9 @@ DTDs and the web address to obtain them are:
 
   http://www.ncbi.nlm.nih.gov/data_specs/dtd/
 
-=head1 FEEDBACK
+=head1 CONTRIBUTORS
 
-=head2 Mailing Lists
-
-User feedback is an integral part of the evolution of this and other
-Bioperl modules. Send your comments and suggestions preferably to
-the Bioperl mailing list.  Your participation is much appreciated.
-
-  bioperl-l@bioperl.org                  - General discussion
-  http://bioperl.org/wiki/Mailing_lists  - About the mailing lists
-
-=head2 Support
-
-Please direct usage questions or support issues to the mailing list:
-
-I<bioperl-l@bioperl.org>
-
-rather than to the module maintainer directly. Many experienced and
-reponsive experts will be able look at the problem and quickly
-address it. Please include a thorough description of the problem
-with code and data examples if at all possible.
-
-=head2 Reporting Bugs
-
-Report bugs to the Bioperl bug tracking system to help us keep track
-of the bugs and their resolution. Bug reports can be submitted via the
-web:
-
-  https://redmine.open-bio.org/projects/bioperl/
-
-=head1 AUTHOR - Jason Stajich
-
-Email jason-at-bioperl.org
+ Chris Fields <cjfields@cpan.org>
 
 =head1 APPENDIX
 
@@ -137,6 +107,7 @@ Internal methods are usually preceded with a _
 # Let the code begin...
 
 package Bio::SearchIO::blastxml;
+
 use strict;
 # Object preamble - inherits from Bio::Root::Root
 

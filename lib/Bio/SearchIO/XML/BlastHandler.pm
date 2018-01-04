@@ -1,7 +1,12 @@
-#
+# ABSTRACT: XML Handler for NCBI Blast XML parsing.
+# AUTHOR:   Jason Stajich <jason-at-bioperl.org>
+# AUTHOR:   Chris Fields <cjfields@cpan.org>
+# OWNER:    2006-2018 Jason Stajich
+# LICENSE:  Perl_5
+
 # BioPerl module for Bio::SearchIO::XML::BlastHandler
 #
-# Please direct questions and support issues to <bioperl-l@bioperl.org> 
+# Please direct questions and support issues to <bioperl-l@bioperl.org>
 #
 # Cared for by Jason Stajich, Chris Fields
 #
@@ -10,10 +15,6 @@
 # You may distribute this module under the same terms as perl itself
 
 # POD documentation - main docs before the code
-
-=head1 NAME
-
-Bio::SearchIO::XML::BlastHandler - XML Handler for NCBI Blast XML parsing.
 
 =head1 SYNOPSIS
 
@@ -36,41 +37,6 @@ In addition to parts of the Bio:: hierarchy, this module uses:
 
 which comes with the XML::SAX distribution.
 
-=head1 FEEDBACK
-
-=head2 Mailing Lists
-
-User feedback is an integral part of the evolution of this and other
-Bioperl modules. Send your comments and suggestions preferably to
-the Bioperl mailing list.  Your participation is much appreciated.
-
-  bioperl-l@bioperl.org                  - General discussion
-  http://bioperl.org/wiki/Mailing_lists  - About the mailing lists
-
-=head2 Support 
-
-Please direct usage questions or support issues to the mailing list:
-
-I<bioperl-l@bioperl.org>
-
-rather than to the module maintainer directly. Many experienced and 
-reponsive experts will be able look at the problem and quickly 
-address it. Please include a thorough description of the problem 
-with code and data examples if at all possible.
-
-=head2 Reporting Bugs
-
-Report bugs to the Bioperl bug tracking system to help us keep track
-of the bugs and their resolution. Bug reports can be submitted via the
-web:
-
-  https://redmine.open-bio.org/projects/bioperl/
-
-=head1 AUTHOR - Jason Stajich, Chris Fields
-
-Email jason-at-bioperl.org
-Email cjfields-at-uiuc dot edu
-
 =head1 APPENDIX
 
 The rest of the documentation details each of the object methods.
@@ -80,6 +46,7 @@ Internal methods are usually preceded with a _
 
 # Let the code begin...
 package Bio::SearchIO::XML::BlastHandler;
+
 use base qw(Bio::Root::Root XML::SAX::Base);
 
 my %MODEMAP = (
@@ -100,7 +67,7 @@ my %MAPPING = (
                 'BlastOutput_reference' => 'RESULT-program_reference',
                 'BlastOutput_query-def' => 'RESULT-query_description',
                 'BlastOutput_query-len' => 'RESULT-query_length',
-                'BlastOutput_query-ID'  => 'runid',                
+                'BlastOutput_query-ID'  => 'runid',
                 'Parameters_matrix'     => { 'RESULT-parameters' => 'matrix'},
                 'Parameters_expect'     => { 'RESULT-parameters' => 'expect'},
                 'Parameters_include'    => { 'RESULT-parameters' => 'include'},
@@ -116,7 +83,7 @@ my %MAPPING = (
                 'Statistics_kappa'      => { 'RESULT-statistics' => 'kappa' },
                 'Statistics_lambda'     => { 'RESULT-statistics' => 'lambda' },
                 'Statistics_entropy'    => { 'RESULT-statistics' => 'entropy'},
-                
+
                 # HSP specific fields
                 'Hsp_bit-score'  => 'HSP-bits',
                 'Hsp_score'      => 'HSP-score',
@@ -145,11 +112,11 @@ my %MAPPING = (
                 'Hit_num'              => 'HIT-order',
                 'Iteration_iter-num'   => 'HIT-iteration',
                 'Iteration_stat'       => 'HIT-iteration_statistic',
-                
+
                 # if these tags are present, they will overwrite the
                 # above with more current data (i.e. multiquery hits)
                 'Iteration_query-def'   => 'RESULT-query_description',
-                'Iteration_query-len'   => 'RESULT-query_length',       
+                'Iteration_query-len'   => 'RESULT-query_length',
                 'Iteration_query-ID'    => 'runid',
                );
 
@@ -166,7 +133,7 @@ my %IGNOREDTAGS = (
                 'Statistics'           => 1,
                 'Parameters'           => 1,
                 'BlastOutput'          => 1,
-                'BlastOutput_iterations' => 1,     
+                'BlastOutput_iterations' => 1,
                    );
 
 =head2 SAX methods
@@ -202,10 +169,10 @@ sub start_document{
 
 sub end_document{
    my ($self,@args) = @_;
-   
+
    # reset data carried throughout parse
    $self->{'_resultdata'} = undef;
-   
+
    # pass back ref to results queue; caller must reset handler results queue
    return $self->{'_result'};
 }
@@ -229,7 +196,7 @@ sub start_element{
         if( $self->eventHandler->will_handle($type) ) {
             my $func = sprintf("start_%s",lc $type);
             $self->eventHandler->$func($data->{'Attributes'});
-        }                                                    
+        }
     }
 }
 
@@ -250,7 +217,7 @@ sub end_element{
     my $rc;
     if($nm eq 'BlastOutput_program' &&
        $self->{'_last_data'} =~ /(t?blast[npx])/i ) {
-        $self->{'_type'} = uc $1; 
+        $self->{'_type'} = uc $1;
     }
     if ($nm eq 'Iteration') {
         map {
@@ -264,7 +231,7 @@ sub end_element{
                                               $self->{'_values'});
         }
     }
-    elsif( exists $MAPPING{$nm} ) { 
+    elsif( exists $MAPPING{$nm} ) {
         if ( ref($MAPPING{$nm}) =~ /hash/i ) {
             my $key = (keys %{$MAPPING{$nm}})[0];
             $self->{'_values'}->{$key}->{$MAPPING{$nm}->{$key}} = $self->{'_last_data'};
@@ -275,12 +242,12 @@ sub end_element{
     elsif( exists $IGNOREDTAGS{$nm} ){
         # ignores these elements for now
     }
-    else {      
+    else {
         $self->debug("ignoring unrecognized element type $nm\n");
     }
-    $self->{'_last_data'} = ''; # remove read data if we are at 
+    $self->{'_last_data'} = ''; # remove read data if we are at
                                 # end of an element
-                                
+
     # add to ResultI array
     $self->{'_result'} = $rc if( $nm eq 'Iteration' );
     # reset values for each Result round
