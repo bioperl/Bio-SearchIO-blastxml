@@ -351,6 +351,16 @@ END
     return $self->{'_blasttype'};
 }
 
+=head2 saxparser
+
+ Title   : saxparser
+ Usage   : $obj->saxparser($newtype)
+ Function: Get the BLAST XML::SAX::ParserFactory instance.
+ Returns : XML::SAX::ParserFactory
+ Args    : None
+
+=cut
+
 sub saxparser {
     my $self = shift;
     return ref($self->{'_xmlparser'});

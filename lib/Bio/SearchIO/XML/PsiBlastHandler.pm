@@ -261,7 +261,6 @@ sub end_element{
  Returns : characters read
  Args    : hash ref with the key 'Data'
 
-
 =cut
 
 sub characters{
@@ -269,6 +268,16 @@ sub characters{
    return unless ( defined $data->{'Data'} && $data->{'Data'} !~ /^\s+$/ );
    $self->{'_last_data'} .= $data->{'Data'};
 }
+
+=head2 eventHandler
+
+ Title   : eventHandler
+ Usage   : $parser->eventHandler($handler)
+ Function: Get/Set event handler (XML::SAX::Base) instance
+ Returns : XML::SAX::Base
+ Args    : XML::SAX::Base implemntation (Optional)
+
+=cut
 
 sub eventHandler {
     my $self = shift;

@@ -273,6 +273,16 @@ sub characters{
    $self->{'_last_data'} .= $data->{'Data'};
 }
 
+=head2 eventHandler
+
+ Title   : eventHandler
+ Usage   : $parser->eventHandler($handler)
+ Function: Get/Set event handler (XML::SAX::Base) instance
+ Returns : XML::SAX::Base
+ Args    : XML::SAX::Base implemntation (Optional)
+
+=cut
+
 sub eventHandler {
     my $self = shift;
     return $self->{'_handler'} = shift if @_;
